@@ -559,6 +559,224 @@
     opacity: 0.6;
   }
 
+  /* TUTORIAL SECTION */
+  .tutorial-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .tutorial-header {
+    background: var(--accent-bg);
+    border-bottom: 1px solid var(--accent-border);
+    padding: 18px 24px 16px;
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .tutorial-header-deva {
+    font-family: var(--font-deva);
+    font-size: 22px;
+    color: var(--accent);
+    line-height: 1.2;
+  }
+
+  .tutorial-header-eng {
+    font-size: 15px;
+    color: var(--text2);
+    font-style: italic;
+  }
+
+  .tutorial-toggle {
+    margin-left: auto;
+    font-family: var(--font-body);
+    font-size: 12px;
+    padding: 5px 14px;
+    border: 1px solid var(--accent-border);
+    border-radius: 20px;
+    background: transparent;
+    color: var(--accent);
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    transition: all 0.15s;
+  }
+
+  .tutorial-toggle:hover {
+    background: var(--accent);
+    color: white;
+  }
+
+  .tutorial-body {
+    padding: 22px 24px 24px;
+    display: none;
+  }
+
+  .tutorial-body.open { display: block; }
+
+  .tut-intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 22px;
+  }
+
+  @media (max-width: 640px) { .tut-intro { grid-template-columns: 1fr; } }
+
+  .tut-intro-col {
+    padding: 16px 18px;
+  }
+
+  .tut-intro-col:first-child {
+    border-right: 1px solid var(--border);
+    background: var(--surface2);
+  }
+
+  .tut-lang-tag {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 10px;
+  }
+
+  .tut-sa {
+    font-family: var(--font-deva);
+    font-size: 16px;
+    color: var(--text);
+    line-height: 1.9;
+  }
+
+  .tut-en {
+    font-size: 15px;
+    color: var(--text);
+    line-height: 1.75;
+  }
+
+  .tut-steps-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .tut-steps-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .tut-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+
+  .tut-step {
+    display: grid;
+    grid-template-columns: 36px 1fr 1fr;
+    gap: 14px;
+    align-items: start;
+  }
+
+  @media (max-width: 580px) {
+    .tut-step { grid-template-columns: 30px 1fr; }
+    .tut-step-en { display: none; }
+  }
+
+  .tut-step-num {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .tut-step-sa {
+    font-family: var(--font-deva);
+    font-size: 15px;
+    color: var(--text);
+    line-height: 1.75;
+    padding: 6px 10px;
+    background: var(--surface2);
+    border-radius: var(--radius);
+    border-left: 3px solid var(--accent-border);
+  }
+
+  .tut-step-en {
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.65;
+    padding: 6px 10px;
+    background: var(--blue-bg);
+    border-radius: var(--radius);
+    border-left: 3px solid var(--blue-border);
+    font-style: italic;
+  }
+
+  .tut-step-en strong {
+    font-style: normal;
+    color: var(--blue);
+    font-weight: 600;
+  }
+
+  .tut-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 14px 16px;
+    background: var(--surface2);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+  }
+
+  .tut-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text2);
+  }
+
+  .legend-swatch {
+    width: 36px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-deva);
+    font-size: 14px;
+    box-shadow: var(--shadow-tile);
+    flex-shrink: 0;
+  }
+
+  .swatch-root { background: var(--gold-bg); border: 1.5px solid var(--gold-border); color: var(--gold); }
+  .swatch-suffix { background: var(--blue-bg); border: 1.5px solid var(--blue-border); color: var(--blue); }
+  .swatch-pool { background: var(--surface); border: 1.5px solid var(--border); color: var(--text2); }
+  .swatch-match { background: var(--teal-bg); border: 1.5px solid var(--teal-border); color: var(--teal); }
+
   /* Vibhakti number badge */
   .vib-badge {
     display: inline-flex;
@@ -587,6 +805,148 @@
 </header>
 
 <div class="main">
+
+  <!-- Tutorial -->
+  <div class="tutorial-card">
+    <div class="tutorial-header">
+      <span class="tutorial-header-deva">कथं उपयोक्तव्यम्?</span>
+      <span class="tutorial-header-eng">How to use this tool</span>
+      <button class="tutorial-toggle" onclick="toggleTutorial(this)">Show guide ▾</button>
+    </div>
+    <div class="tutorial-body" id="tutorial-body">
+
+      <div class="tut-intro">
+        <div class="tut-intro-col">
+          <div class="tut-lang-tag">संस्कृतम्</div>
+          <div class="tut-sa">
+            संस्कृतभाषायाम् नामपदानि विभक्तिभिः परिवर्तन्ते।<br>
+            विभक्तिः वाक्ये शब्दस्य कार्यं सूचयति।<br>
+            अष्टौ विभक्तयः सन्ति — प्रथमा आरभ्य सम्बोधनपर्यन्तम्।<br>
+            प्रत्येका विभक्तिः प्रत्ययेन सह प्रयुज्यते।<br>
+            अस्मिन् साधने तिलकैः प्रत्ययान् योजयित्वा<br>
+            विभक्तिरूपाणि निर्मातुं शक्यन्ते।
+          </div>
+        </div>
+        <div class="tut-intro-col">
+          <div class="tut-lang-tag">English</div>
+          <div class="tut-en">
+            In Sanskrit, nouns change form according to their grammatical <em>case</em> — called <strong>vibhakti</strong> (विभक्ति). There are eight cases, from the Nominative (<em>prathamā</em>) to the Vocative (<em>sambodhana</em>). Each case is formed by attaching a <em>suffix</em> (प्रत्यय, <em>pratyaya</em>) to the noun base. This tool lets you build those forms tile by tile — the way a student of Pāṇini would assemble a word from its parts.
+          </div>
+        </div>
+      </div>
+
+      <div class="tut-steps-label">Step-by-step guide &nbsp;·&nbsp; क्रमशः मार्गदर्शनम्</div>
+
+      <div class="tut-steps">
+
+        <div class="tut-step">
+          <div class="tut-step-num">१</div>
+          <div class="tut-sa">
+            <strong>प्रकरणं चिनुत।</strong><br>
+            उपरि "Choose declension class" इति स्थाने शब्दस्य लिङ्गं वर्गं च चिनुत।
+            उदाहरणम् — राम (अकारान्त पुंलिङ्ग), सीता (आकारान्त स्त्रीलिङ्ग),
+            कवि (इकारान्त), गुरु (उकारान्त)।
+          </div>
+          <div class="tut-step-en">
+            <strong>Choose a declension class.</strong><br>
+            Select the noun class at the top — masculine <em>a</em>-stem (rāma), feminine <em>ā</em>-stem (sītā), <em>i</em>-stem (kavi), or <em>u</em>-stem (guru). The root tiles and suffix pool will update instantly.
+          </div>
+        </div>
+
+        <div class="tut-step">
+          <div class="tut-step-num">२</div>
+          <div class="tut-sa">
+            <strong>मूलशब्दं पश्यत।</strong><br>
+            "Word being built" इति क्षेत्रे धातुरूपस्य सुवर्णतिलकाः दृश्यन्ते।
+            एते तिलकाः स्थिराः — परिवर्तनीयाः न।
+            अधः "Suffix tile pool" तः प्रत्ययतिलकं चिनुत।
+          </div>
+          <div class="tut-step-en">
+            <strong>Observe the root tiles.</strong><br>
+            The golden tiles in the word-display area show the fixed noun base — they cannot be removed. These represent the <em>prakṛti</em> (base form) of the word.
+          </div>
+        </div>
+
+        <div class="tut-step">
+          <div class="tut-step-num">३</div>
+          <div class="tut-sa">
+            <strong>प्रत्ययतिलकं स्पृशत।</strong><br>
+            "Suffix tile pool" इति क्षेत्रे नीलतिलकाः सन्ति।
+            एकैकं तिलकं स्पृशत — मूलशब्दे प्रत्ययः संयुज्यते।
+            यदि प्रत्ययः द्विखण्डः अस्ति (यथा — रामेण = े + ण),
+            तदा क्रमेण द्वौ तिलकौ स्पृशत।
+          </div>
+          <div class="tut-step-en">
+            <strong>Tap a suffix tile from the pool.</strong><br>
+            Click any blue tile in the suffix pool — it joins onto the root. Some vibhaktis need <strong>two tiles in sequence</strong> (e.g., rāmeṇa = base + <em>e</em> + <em>ṇa</em>). Keep tapping until the banner lights up green.
+          </div>
+        </div>
+
+        <div class="tut-step">
+          <div class="tut-step-num">४</div>
+          <div class="tut-sa">
+            <strong>परिणामं पठत।</strong><br>
+            यदि शब्दरूपं सम्यक् निर्मितम्, तदा हरितवर्णे विभक्तिनाम दर्शितम्।
+            अर्थः, उदाहरणवाक्यं च तत्र दृश्यते।
+            यदि न मिलति, पुनः प्रयत्नं कुरुत।
+          </div>
+          <div class="tut-step-en">
+            <strong>Read the result banner.</strong><br>
+            When your tiles spell a valid vibhakti form, the banner turns <strong style="color:var(--green)">green</strong> and displays the vibhakti name, IAST transliteration, grammatical meaning, and an example sentence. If no match, try a different tile or clear the suffix and start again.
+          </div>
+        </div>
+
+        <div class="tut-step">
+          <div class="tut-step-num">५</div>
+          <div class="tut-sa">
+            <strong>सन्दर्भसारणी उपयुज्यताम्।</strong><br>
+            अधः "Vibhakti reference" सारण्यां सर्वाणि रूपाणि दृश्यन्ते।
+            कं अपि कोशं स्पृशत — तस्य रूपं स्वयमेव निर्मीयते।
+            एवं अभ्यासः शीघ्रतया कर्तुं शक्यते।
+          </div>
+          <div class="tut-step-en">
+            <strong>Use the reference grid to study.</strong><br>
+            The grid at the bottom shows all eight forms at a glance. <strong>Tap any cell</strong> to auto-set that form on the board — useful for exploring or checking. The active vibhakti is highlighted in teal.
+          </div>
+        </div>
+
+        <div class="tut-step">
+          <div class="tut-step-num">६</div>
+          <div class="tut-sa">
+            <strong>प्रत्ययं निरसितुम्।</strong><br>
+            नीलतिलके क्लिक् कुरुत — सः तिलकः अपसारितः भविष्यति।
+            "Clear suffix" इति बटनेन सर्वे प्रत्ययाः एकेन नश्यन्ति।
+          </div>
+          <div class="tut-step-en">
+            <strong>Remove a tile or reset.</strong><br>
+            Click any blue suffix tile in the word display to remove it (hover to see the ✕). Use the <strong>"Clear suffix"</strong> button to remove all suffix tiles at once and start fresh.
+          </div>
+        </div>
+
+      </div>
+
+      <div class="tut-steps-label">Tile colour guide &nbsp;·&nbsp; तिलकवर्णसूची</div>
+      <div class="tut-legend">
+        <div class="tut-legend-item">
+          <div class="legend-swatch swatch-root">रा</div>
+          <span>Root tile (धातु) — fixed, golden</span>
+        </div>
+        <div class="tut-legend-item">
+          <div class="legend-swatch swatch-suffix">ः</div>
+          <span>Suffix tile (प्रत्यय) — added, blue</span>
+        </div>
+        <div class="tut-legend-item">
+          <div class="legend-swatch swatch-pool">ाय</div>
+          <span>Pool tile — tap to add</span>
+        </div>
+        <div class="tut-legend-item">
+          <div class="legend-swatch swatch-match">✓</div>
+          <span>Teal border = valid vibhakti matched</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
 
   <!-- Step 1: Declension -->
   <div class="section-card">
@@ -927,6 +1287,12 @@ function renderAll() {
   renderWordDisplay();
   renderResult();
   buildPool();
+}
+
+function toggleTutorial(btn) {
+  const body = document.getElementById('tutorial-body');
+  const open = body.classList.toggle('open');
+  btn.textContent = open ? 'Hide guide ▴' : 'Show guide ▾';
 }
 
 buildDeclGrid();
