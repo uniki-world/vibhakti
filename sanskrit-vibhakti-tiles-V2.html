@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="sa">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sanskrit Vibhakti Tile Builder · विभक्ति निर्माण</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Sanskrit:ital@0;1&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #faf8f3;
+    --surface: #ffffff;
+    --surface2: #f3f0e8;
+    --border: #d8d2c0;
+    --border2: #c4bda8;
+    --text: #1e1c17;
+    --text2: #5c5649;
+    --text3: #8c8476;
+    --accent: #8b3a1a;
+    --accent-bg: #fdf0e8;
+    --accent-border: #d4845a;
+    --teal: #1a6b5a;
+    --teal-bg: #e8f5f1;
+    --teal-border: #5ab8a0;
+    --blue: #1a4a8b;
+    --blue-bg: #e8eff8;
+    --blue-border: #6a9dd8;
+    --gold: #7a5c10;
+    --gold-bg: #fdf6e0;
+    --gold-border: #c8a84a;
+    --red: #8b1a1a;
+    --red-bg: #fdf0f0;
+    --red-border: #d46a6a;
+    --green: #2a6b2a;
+    --green-bg: #eef8ee;
+    --green-border: #6ab86a;
+    --radius: 10px;
+    --radius-lg: 14px;
+    --shadow: 0 2px 8px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04);
+    --shadow-tile: 0 3px 10px rgba(0,0,0,0.10), 0 1px 3px rgba(0,0,0,0.06);
+    --font-deva: 'Tiro Devanagari Sanskrit', serif;
+    --font-body: 'Crimson Pro', Georgia, serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 17px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 32px;
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .header-title {
+    font-family: var(--font-deva);
+    font-size: 26px;
+    color: var(--accent);
+    font-weight: 400;
+    letter-spacing: 0.01em;
+  }
+
+  .header-sub {
+    font-size: 14px;
+    color: var(--text3);
+    font-style: italic;
+    letter-spacing: 0.03em;
+  }
+
+  .header-badge {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--text3);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 3px 12px;
+    letter-spacing: 0.04em;
+  }
+
+  .main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 28px 24px 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .section-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px 22px;
+    box-shadow: var(--shadow);
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* DECLENSION SELECTOR */
+  .decl-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+  }
+
+  .decl-btn {
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .decl-btn:hover {
+    border-color: var(--accent-border);
+    background: var(--accent-bg);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-tile);
+  }
+
+  .decl-btn.active {
+    background: var(--accent-bg);
+    border-color: var(--accent);
+    border-width: 2px;
+    box-shadow: 0 0 0 3px rgba(139,58,26,0.1);
+  }
+
+  .decl-eg {
+    font-family: var(--font-deva);
+    font-size: 22px;
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  .decl-btn.active .decl-eg { color: var(--accent); }
+
+  .decl-name {
+    font-family: var(--font-deva);
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.3;
+  }
+
+  .decl-sub {
+    font-size: 12px;
+    color: var(--text3);
+    font-style: italic;
+  }
+
+  /* WORD DISPLAY */
+  .word-zone {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .word-display {
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 6px;
+    min-height: 90px;
+    background: var(--surface2);
+    border: 1.5px dashed var(--border2);
+    border-radius: var(--radius-lg);
+    padding: 16px 18px;
+    transition: border-color 0.2s;
+  }
+
+  .word-display.has-match {
+    border-color: var(--teal-border);
+    border-style: solid;
+    background: var(--teal-bg);
+  }
+
+  .word-display.no-match {
+    border-color: var(--border2);
+  }
+
+  /* TILES */
+  .tile {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius);
+    padding: 8px 12px;
+    min-width: 52px;
+    min-height: 72px;
+    box-shadow: var(--shadow-tile);
+    transition: all 0.15s ease;
+    position: relative;
+    user-select: none;
+  }
+
+  .tile-deva {
+    font-family: var(--font-deva);
+    font-size: 30px;
+    line-height: 1.15;
+    font-weight: 400;
+  }
+
+  .tile-roman {
+    font-size: 11px;
+    font-style: italic;
+    margin-top: 4px;
+    letter-spacing: 0.02em;
+  }
+
+  /* Root tiles — warm parchment */
+  .tile-root {
+    background: var(--gold-bg);
+    border: 1.5px solid var(--gold-border);
+    cursor: default;
+  }
+
+  .tile-root .tile-deva { color: var(--gold); }
+  .tile-root .tile-roman { color: #a07a30; }
+
+  /* Suffix tiles — blue, removable */
+  .tile-suffix {
+    background: var(--blue-bg);
+    border: 1.5px solid var(--blue-border);
+    cursor: pointer;
+    animation: tile-pop 0.22s cubic-bezier(.34,1.56,.64,1) both;
+  }
+
+  .tile-suffix .tile-deva { color: var(--blue); }
+  .tile-suffix .tile-roman { color: #3a6aaa; }
+
+  .tile-suffix:hover {
+    background: var(--red-bg);
+    border-color: var(--red-border);
+    transform: translateY(-2px) scale(1.04);
+  }
+
+  .tile-suffix:hover .tile-deva { color: var(--red); }
+  .tile-suffix:hover .tile-roman { color: #aa4a4a; }
+
+  .tile-remove-x {
+    position: absolute;
+    top: -7px;
+    right: -7px;
+    width: 18px;
+    height: 18px;
+    background: var(--red);
+    color: white;
+    border-radius: 50%;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.12s;
+    pointer-events: none;
+  }
+
+  .tile-suffix:hover .tile-remove-x { opacity: 1; }
+
+  @keyframes tile-pop {
+    from { transform: scale(0.6) translateY(10px); opacity: 0; }
+    to { transform: scale(1) translateY(0); opacity: 1; }
+  }
+
+  .tile-connector {
+    font-size: 22px;
+    color: var(--border2);
+    align-self: center;
+    padding: 0 2px;
+    line-height: 1;
+  }
+
+  .word-placeholder {
+    font-size: 14px;
+    color: var(--text3);
+    font-style: italic;
+    align-self: center;
+  }
+
+  /* RESULT BANNER */
+  .result-banner {
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    border: 1.5px solid var(--border);
+    background: var(--surface2);
+    transition: all 0.25s ease;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .result-banner.matched {
+    background: var(--green-bg);
+    border-color: var(--green-border);
+  }
+
+  .result-banner.pending {
+    background: var(--surface2);
+    border-color: var(--border);
+  }
+
+  .result-num {
+    font-size: 13px;
+    color: var(--text3);
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  .result-main {
+    flex: 1;
+  }
+
+  .result-name {
+    font-family: var(--font-deva);
+    font-size: 20px;
+    color: var(--text);
+    line-height: 1.2;
+    display: inline;
+    margin-right: 10px;
+  }
+
+  .result-banner.matched .result-name { color: var(--green); }
+
+  .result-english {
+    font-size: 14px;
+    color: var(--text3);
+    font-style: italic;
+  }
+
+  .result-iast {
+    font-size: 15px;
+    color: var(--text2);
+    margin-top: 2px;
+  }
+
+  .result-banner.matched .result-iast { color: #3a6b3a; }
+
+  .result-example {
+    font-size: 13px;
+    color: var(--text3);
+    margin-top: 3px;
+    font-style: italic;
+  }
+
+  .result-meaning-pill {
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    border: 1px solid var(--green-border);
+    background: var(--green-bg);
+    color: var(--green);
+    align-self: flex-start;
+    margin-top: 4px;
+  }
+
+  .zone-controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .ctrl-btn {
+    font-family: var(--font-body);
+    font-size: 13px;
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--text2);
+    cursor: pointer;
+    transition: all 0.12s;
+    letter-spacing: 0.02em;
+  }
+
+  .ctrl-btn:hover {
+    border-color: var(--border2);
+    color: var(--text);
+    background: var(--surface2);
+  }
+
+  /* SUFFIX POOL */
+  .pool-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 88px;
+    align-items: flex-start;
+  }
+
+  .pool-tile {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 58px;
+    min-height: 78px;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 8px 10px;
+    cursor: pointer;
+    box-shadow: var(--shadow-tile);
+    transition: all 0.15s ease;
+    position: relative;
+  }
+
+  .pool-tile:hover {
+    background: var(--blue-bg);
+    border-color: var(--blue-border);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(26,74,139,0.15);
+  }
+
+  .pool-tile.disabled {
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  .pool-tile .pt-deva {
+    font-family: var(--font-deva);
+    font-size: 26px;
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  .pool-tile:hover .pt-deva { color: var(--blue); }
+
+  .pool-tile .pt-roman {
+    font-size: 11px;
+    font-style: italic;
+    color: var(--text3);
+    margin-top: 3px;
+  }
+
+  .pool-tile:hover .pt-roman { color: #3a6aaa; }
+
+  /* REFERENCE GRID */
+  .ref-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+
+  @media (max-width: 600px) {
+    .ref-grid { grid-template-columns: repeat(2, 1fr); }
+    header { padding: 14px 16px; }
+    .main { padding: 16px 12px 40px; }
+    .section-card { padding: 14px 14px; }
+  }
+
+  .ref-cell {
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 10px 12px;
+    cursor: pointer;
+    background: var(--surface2);
+    transition: all 0.13s ease;
+  }
+
+  .ref-cell:hover {
+    border-color: var(--accent-border);
+    background: var(--accent-bg);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-tile);
+  }
+
+  .ref-cell.active {
+    border-color: var(--teal);
+    border-width: 2px;
+    background: var(--teal-bg);
+  }
+
+  .ref-num {
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .ref-name {
+    font-family: var(--font-deva);
+    font-size: 15px;
+    color: var(--text);
+    line-height: 1.2;
+    margin: 2px 0;
+  }
+
+  .ref-cell.active .ref-name { color: var(--teal); }
+
+  .ref-form {
+    font-family: var(--font-deva);
+    font-size: 20px;
+    color: var(--text2);
+    line-height: 1.1;
+  }
+
+  .ref-cell.active .ref-form { color: var(--blue); }
+
+  .ref-english {
+    font-size: 11px;
+    color: var(--text3);
+    font-style: italic;
+    margin-top: 2px;
+  }
+
+  /* Decorative rule line at bottom */
+  footer {
+    text-align: center;
+    padding: 20px;
+    color: var(--text3);
+    font-size: 13px;
+    font-style: italic;
+    letter-spacing: 0.03em;
+    border-top: 1px solid var(--border);
+  }
+
+  .ornament {
+    display: inline-block;
+    font-family: var(--font-deva);
+    font-size: 18px;
+    color: var(--accent);
+    margin: 0 10px;
+    opacity: 0.6;
+  }
+
+  /* Vibhakti number badge */
+  .vib-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: var(--font-body);
+    flex-shrink: 0;
+  }
+
+  .result-banner.matched .vib-badge { background: var(--green); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-title">विभक्ति निर्माण</div>
+  <div class="header-sub">Sanskrit Vibhakti Tile Builder</div>
+  <div class="header-badge">अष्ट विभक्तयः &nbsp;·&nbsp; 8 cases</div>
+</header>
+
+<div class="main">
+
+  <!-- Step 1: Declension -->
+  <div class="section-card">
+    <div class="section-label">Step 1 — Choose declension class</div>
+    <div class="decl-grid" id="decl-grid"></div>
+  </div>
+
+  <!-- Step 2: Word Builder -->
+  <div class="section-card">
+    <div class="section-label" style="margin-bottom:10px;">Step 2 — Build the word form</div>
+    <div class="word-zone">
+      <div class="word-display" id="word-display">
+        <span class="word-placeholder">Add suffix tiles from the pool below...</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+        <div class="result-banner pending" id="result-banner" style="flex:1;">
+          <span style="font-size:14px; color:var(--text3); font-style:italic;">Pick suffix tiles to build a vibhakti form</span>
+        </div>
+        <button class="ctrl-btn" onclick="resetSuffix()">Clear suffix</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 3: Pool -->
+  <div class="section-card">
+    <div class="section-label">Step 3 — Suffix tile pool — click a tile to add it</div>
+    <div class="pool-wrap" id="suffix-pool"></div>
+  </div>
+
+  <!-- Reference -->
+  <div class="section-card">
+    <div class="section-label">Vibhakti reference — click any row to set that form directly</div>
+    <div class="ref-grid" id="ref-grid"></div>
+  </div>
+
+</div>
+
+<footer>
+  <span class="ornament">ॐ</span>
+  अष्टौ विभक्तयः पाणिनीयव्याकरणे
+  <span class="ornament">।</span>
+</footer>
+
+<script>
+const DECLENSIONS = [
+  {
+    id: 'a-m',
+    eg: 'राम', name: 'अकारान्त पुंलिङ्ग', sub: 'a-stem masculine',
+    root: [{ deva: 'रा', roman: 'rā' }, { deva: 'म', roman: 'ma' }],
+    base: 'राम',
+    vibhaktis: [
+      { num:1, name:'प्रथमा', eng:'Nominative', meaning:'subject',
+        suffix:[{deva:'ः',roman:'ḥ'}], full:'रामः', iast:'rāmaḥ',
+        ex:'रामः गच्छति — Rāma goes' },
+      { num:2, name:'द्वितीया', eng:'Accusative', meaning:'direct object',
+        suffix:[{deva:'म्',roman:'m'}], full:'रामम्', iast:'rāmam',
+        ex:'रामम् पश्यामि — I see Rāma' },
+      { num:3, name:'तृतीया', eng:'Instrumental', meaning:'by / with',
+        suffix:[{deva:'े',roman:'e'},{deva:'ण',roman:'ṇa'}], full:'रामेण', iast:'rāmeṇa',
+        ex:'रामेण सह — together with Rāma' },
+      { num:4, name:'चतुर्थी', eng:'Dative', meaning:'for / to',
+        suffix:[{deva:'ा',roman:'ā'},{deva:'य',roman:'ya'}], full:'रामाय', iast:'rāmāya',
+        ex:'रामाय ददाति — gives to Rāma' },
+      { num:5, name:'पञ्चमी', eng:'Ablative', meaning:'from',
+        suffix:[{deva:'ा',roman:'ā'},{deva:'त्',roman:'t'}], full:'रामात्', iast:'rāmāt',
+        ex:'रामात् आयाति — comes from Rāma' },
+      { num:6, name:'षष्ठी', eng:'Genitive', meaning:'of / possession',
+        suffix:[{deva:'स्य',roman:'sya'}], full:'रामस्य', iast:'rāmasya',
+        ex:'रामस्य पुत्रः — son of Rāma' },
+      { num:7, name:'सप्तमी', eng:'Locative', meaning:'in / at / on',
+        suffix:[{deva:'े',roman:'e'}], full:'रामे', iast:'rāme',
+        ex:'रामे भक्तिः — devotion in Rāma' },
+      { num:8, name:'सम्बोधन', eng:'Vocative', meaning:'O! address',
+        suffix:[], full:'राम', iast:'rāma',
+        ex:'राम! एहि — O Rāma! Come!' }
+    ]
+  },
+  {
+    id: 'aa-f',
+    eg: 'सीता', name: 'आकारान्त स्त्रीलिङ्ग', sub: 'ā-stem feminine',
+    root: [{ deva: 'सी', roman: 'sī' }, { deva: 'ता', roman: 'tā' }],
+    base: 'सीता',
+    vibhaktis: [
+      { num:1, name:'प्रथमा', eng:'Nominative', meaning:'subject',
+        suffix:[], full:'सीता', iast:'sītā', ex:'सीता वसति — Sītā dwells' },
+      { num:2, name:'द्वितीया', eng:'Accusative', meaning:'direct object',
+        suffix:[{deva:'म्',roman:'m'}], full:'सीताम्', iast:'sītām',
+        ex:'सीताम् पश्यामि — I see Sītā' },
+      { num:3, name:'तृतीया', eng:'Instrumental', meaning:'by / with',
+        suffix:[{deva:'या',roman:'yā'}], full:'सीतया', iast:'sītayā',
+        ex:'सीतया सह — with Sītā' },
+      { num:4, name:'चतुर्थी', eng:'Dative', meaning:'for / to',
+        suffix:[{deva:'यै',roman:'yai'}], full:'सीतायै', iast:'sītāyai',
+        ex:'सीतायै ददाति — gives to Sītā' },
+      { num:5, name:'पञ्चमी', eng:'Ablative', meaning:'from',
+        suffix:[{deva:'याः',roman:'yāḥ'}], full:'सीतायाः', iast:'sītāyāḥ',
+        ex:'सीतायाः आयाति — comes from Sītā' },
+      { num:6, name:'षष्ठी', eng:'Genitive', meaning:'of / possession',
+        suffix:[{deva:'याः',roman:'yāḥ'}], full:'सीतायाः', iast:'sītāyāḥ',
+        ex:'सीतायाः पुत्रः — son of Sītā' },
+      { num:7, name:'सप्तमी', eng:'Locative', meaning:'in / at / on',
+        suffix:[{deva:'याम्',roman:'yām'}], full:'सीतायाम्', iast:'sītāyām',
+        ex:'सीतायाम् — in Sītā (devotion)' },
+      { num:8, name:'सम्बोधन', eng:'Vocative', meaning:'O! address',
+        suffix:[{deva:'े',roman:'e'}], full:'सीते', iast:'sīte',
+        ex:'सीते! — O Sītā!' }
+    ]
+  },
+  {
+    id: 'i-m',
+    eg: 'कवि', name: 'इकारान्त पुंलिङ्ग', sub: 'i-stem masculine',
+    root: [{ deva: 'क', roman: 'ka' }, { deva: 'वि', roman: 'vi' }],
+    base: 'कवि',
+    vibhaktis: [
+      { num:1, name:'प्रथमा', eng:'Nominative', meaning:'subject',
+        suffix:[{deva:'ः',roman:'ḥ'}], full:'कविः', iast:'kaviḥ', ex:'कविः गायति — the poet sings' },
+      { num:2, name:'द्वितीया', eng:'Accusative', meaning:'direct object',
+        suffix:[{deva:'म्',roman:'m'}], full:'कविम्', iast:'kavim', ex:'कविम् पश्यामि — I see the poet' },
+      { num:3, name:'तृतीया', eng:'Instrumental', meaning:'by / with',
+        suffix:[{deva:'ना',roman:'nā'}], full:'कविना', iast:'kavinā', ex:'कविना रचितम् — composed by the poet' },
+      { num:4, name:'चतुर्थी', eng:'Dative', meaning:'for / to',
+        suffix:[{deva:'ये',roman:'ye'}], full:'कवये', iast:'kavaye', ex:'कवये ददाति — gives to the poet' },
+      { num:5, name:'पञ्चमी', eng:'Ablative', meaning:'from',
+        suffix:[{deva:'ेः',roman:'eḥ'}], full:'कवेः', iast:'kaveḥ', ex:'कवेः शृणोति — hears from the poet' },
+      { num:6, name:'षष्ठी', eng:'Genitive', meaning:'of / possession',
+        suffix:[{deva:'ेः',roman:'eḥ'}], full:'कवेः', iast:'kaveḥ', ex:'कवेः काव्यम् — poem of the poet' },
+      { num:7, name:'सप्तमी', eng:'Locative', meaning:'in / at / on',
+        suffix:[{deva:'ौ',roman:'au'}], full:'कवौ', iast:'kavau', ex:'कवौ निवसति — resides in the poet' },
+      { num:8, name:'सम्बोधन', eng:'Vocative', meaning:'O! address',
+        suffix:[{deva:'े',roman:'e'}], full:'कवे', iast:'kave', ex:'कवे! — O Poet!' }
+    ]
+  },
+  {
+    id: 'u-m',
+    eg: 'गुरु', name: 'उकारान्त पुंलिङ्ग', sub: 'u-stem masculine',
+    root: [{ deva: 'गु', roman: 'gu' }, { deva: 'रु', roman: 'ru' }],
+    base: 'गुरु',
+    vibhaktis: [
+      { num:1, name:'प्रथमा', eng:'Nominative', meaning:'subject',
+        suffix:[{deva:'ः',roman:'ḥ'}], full:'गुरुः', iast:'guruḥ', ex:'गुरुः उपदिशति — the teacher instructs' },
+      { num:2, name:'द्वितीया', eng:'Accusative', meaning:'direct object',
+        suffix:[{deva:'म्',roman:'m'}], full:'गुरुम्', iast:'gurum', ex:'गुरुम् नमामि — I bow to the teacher' },
+      { num:3, name:'तृतीया', eng:'Instrumental', meaning:'by / with',
+        suffix:[{deva:'णा',roman:'ṇā'}], full:'गुरुणा', iast:'guruṇā', ex:'गुरुणा उक्तम् — said by the teacher' },
+      { num:4, name:'चतुर्थी', eng:'Dative', meaning:'for / to',
+        suffix:[{deva:'वे',roman:'ve'}], full:'गुरवे', iast:'gurave', ex:'गुरवे दक्षिणा — dakṣiṇā to the teacher' },
+      { num:5, name:'पञ्चमी', eng:'Ablative', meaning:'from',
+        suffix:[{deva:'ोः',roman:'oḥ'}], full:'गुरोः', iast:'guroḥ', ex:'गुरोः शिक्षा — teaching from the teacher' },
+      { num:6, name:'षष्ठी', eng:'Genitive', meaning:'of / possession',
+        suffix:[{deva:'ोः',roman:'oḥ'}], full:'गुरोः', iast:'guroḥ', ex:'गुरोः आज्ञा — command of the teacher' },
+      { num:7, name:'सप्तमी', eng:'Locative', meaning:'in / at / on',
+        suffix:[{deva:'ौ',roman:'au'}], full:'गुरौ', iast:'gurau', ex:'गुरौ भक्तिः — devotion in the teacher' },
+      { num:8, name:'सम्बोधन', eng:'Vocative', meaning:'O! address',
+        suffix:[{deva:'ो',roman:'o'}], full:'गुरो', iast:'guro', ex:'गुरो! — O Teacher!' }
+    ]
+  }
+];
+
+let state = { declId: 'a-m', suffixTiles: [] };
+
+function decl() { return DECLENSIONS.find(d => d.id === state.declId); }
+
+function buildDeclGrid() {
+  document.getElementById('decl-grid').innerHTML = DECLENSIONS.map(d => `
+    <button class="decl-btn ${d.id === state.declId ? 'active' : ''}" onclick="selectDecl('${d.id}')">
+      <span class="decl-eg">${d.eg}</span>
+      <span class="decl-name">${d.name}</span>
+      <span class="decl-sub">${d.sub}</span>
+    </button>
+  `).join('');
+}
+
+function selectDecl(id) {
+  state.declId = id;
+  state.suffixTiles = [];
+  buildDeclGrid();
+  buildRefGrid();
+  renderAll();
+}
+
+function matchVibhakti() {
+  const d = decl();
+  const built = d.base + state.suffixTiles.map(t => t.deva).join('');
+  return d.vibhaktis.find(v => v.full === built) || null;
+}
+
+function renderWordDisplay() {
+  const d = decl();
+  const el = document.getElementById('word-display');
+  const match = matchVibhakti();
+
+  el.className = 'word-display ' + (match ? 'has-match' : (state.suffixTiles.length > 0 ? 'no-match' : ''));
+
+  if (state.suffixTiles.length === 0 && !(d.vibhaktis[7] && d.vibhaktis[7].suffix.length === 0)) {
+    el.innerHTML = d.root.map(r => `
+      <div class="tile tile-root">
+        <span class="tile-deva">${r.deva}</span>
+        <span class="tile-roman">${r.roman}</span>
+      </div>
+    `).join('') + `<span class="word-placeholder" style="margin-left:8px;">+ add suffix tiles below</span>`;
+    return;
+  }
+
+  let html = d.root.map(r => `
+    <div class="tile tile-root">
+      <span class="tile-deva">${r.deva}</span>
+      <span class="tile-roman">${r.roman}</span>
+    </div>
+  `).join('');
+
+  if (state.suffixTiles.length > 0) {
+    html += `<span class="tile-connector">+</span>`;
+    html += state.suffixTiles.map((t, i) => `
+      <div class="tile tile-suffix" onclick="removeTile(${i})" title="Click to remove">
+        <div class="tile-remove-x">✕</div>
+        <span class="tile-deva">${t.deva}</span>
+        <span class="tile-roman">${t.roman}</span>
+      </div>
+    `).join('');
+  }
+
+  el.innerHTML = html;
+}
+
+function renderResult() {
+  const banner = document.getElementById('result-banner');
+  const d = decl();
+  const match = matchVibhakti();
+
+  const isVoc = d.vibhaktis[7].suffix.length === 0 && state.suffixTiles.length === 0;
+  const v = isVoc ? d.vibhaktis[7] : match;
+
+  if (v) {
+    banner.className = 'result-banner matched';
+    banner.innerHTML = `
+      <div class="vib-badge">${v.num}</div>
+      <div class="result-main">
+        <div>
+          <span class="result-name">${v.name}</span>
+          <span class="result-english">${v.eng} &middot; ${v.meaning}</span>
+        </div>
+        <div class="result-iast">${v.full} &nbsp;·&nbsp; <em>${v.iast}</em></div>
+        <div class="result-example">${v.ex}</div>
+      </div>
+    `;
+    highlightRef(v.num);
+  } else if (state.suffixTiles.length === 0) {
+    banner.className = 'result-banner pending';
+    banner.innerHTML = `<span style="font-size:14px;color:var(--text3);font-style:italic;">Pick suffix tiles from the pool below to build a vibhakti form</span>`;
+    highlightRef(null);
+  } else {
+    const built = d.base + state.suffixTiles.map(t => t.deva).join('');
+    banner.className = 'result-banner pending';
+    banner.innerHTML = `
+      <div>
+        <span style="font-family:var(--font-deva);font-size:22px;color:var(--text2);">${built}</span>
+        <span style="font-size:13px;color:var(--text3);margin-left:10px;font-style:italic;">not a recognized form — try adding more</span>
+      </div>`;
+    highlightRef(null);
+  }
+}
+
+function buildPool() {
+  const d = decl();
+  const seen = new Set();
+  const items = [];
+  d.vibhaktis.forEach(v => {
+    v.suffix.forEach((tile, tIdx) => {
+      const key = tile.deva + '__' + tIdx;
+      if (!seen.has(key)) {
+        seen.add(key);
+        items.push({ tile, position: tIdx });
+      }
+    });
+  });
+
+  const el = document.getElementById('suffix-pool');
+  if (items.length === 0) {
+    el.innerHTML = `<span style="font-size:14px;color:var(--text3);font-style:italic;">This declension has no suffixes to add — all forms built from the root alone.</span>`;
+    return;
+  }
+
+  el.innerHTML = items.map(({ tile }) => {
+    const alreadyUsed = state.suffixTiles.some(t => t.deva === tile.deva && state.suffixTiles.filter(x => x.deva === tile.deva).length >= d.vibhaktis.flatMap(v => v.suffix).filter(s => s.deva === tile.deva).length);
+    return `
+      <div class="pool-tile" onclick="addTile('${tile.deva.replace(/'/g,"\\'")}','${tile.roman.replace(/'/g,"\\'")}')">
+        <span class="pt-deva">${tile.deva}</span>
+        <span class="pt-roman">${tile.roman}</span>
+      </div>
+    `;
+  }).join('');
+}
+
+function buildRefGrid() {
+  const d = decl();
+  document.getElementById('ref-grid').innerHTML = d.vibhaktis.map(v => `
+    <div class="ref-cell" id="ref-${v.num}" onclick="setForm(${v.num})">
+      <div class="ref-num">vibhakti ${v.num}</div>
+      <div class="ref-name">${v.name}</div>
+      <div class="ref-form">${v.full}</div>
+      <div class="ref-english">${v.eng}</div>
+    </div>
+  `).join('');
+}
+
+function highlightRef(num) {
+  document.querySelectorAll('.ref-cell').forEach(el => el.classList.remove('active'));
+  if (num) {
+    const el = document.getElementById('ref-' + num);
+    if (el) el.classList.add('active');
+  }
+}
+
+function addTile(deva, roman) {
+  state.suffixTiles.push({ deva, roman });
+  renderAll();
+}
+
+function removeTile(idx) {
+  state.suffixTiles.splice(idx, 1);
+  renderAll();
+}
+
+function resetSuffix() {
+  state.suffixTiles = [];
+  renderAll();
+}
+
+function setForm(num) {
+  const d = decl();
+  const v = d.vibhaktis.find(vb => vb.num === num);
+  if (!v) return;
+  state.suffixTiles = v.suffix.map(t => ({ ...t }));
+  renderAll();
+}
+
+function renderAll() {
+  renderWordDisplay();
+  renderResult();
+  buildPool();
+}
+
+buildDeclGrid();
+buildRefGrid();
+renderAll();
+</script>
+</body>
+</html>
